@@ -6,11 +6,9 @@ typedef int *Int_ptr;
 
 void print_status(Status);
 void describe(Char_ptr);
-void it(Char_ptr);
-void assert_is_empty_list(List_ptr);
-Status assert_is_null(Element);
-Status assert_equal(int, int);
-Status assert_is_int_equal(Element, Element);
-Status assert_is_char_equal(Element, Element);
-
+int increase_test_count();
+void assert_is_null(Element, Char_ptr);
+void assert_equal(int, int, Char_ptr);
+void assert_is_int_equal(Element, int, Char_ptr);
+void assert_is_list_equal(List_ptr, List_ptr, Matcher, Char_ptr);
 #endif
