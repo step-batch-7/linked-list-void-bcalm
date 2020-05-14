@@ -16,6 +16,7 @@ typedef enum
 } Status;
 
 typedef void *Element;
+typedef int *int_ptr;
 
 typedef struct node
 {

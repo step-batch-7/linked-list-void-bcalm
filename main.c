@@ -22,6 +22,13 @@ Element square(Element value)
   return (Element)result;
 }
 
+Element sum(Element num1, Element num2)
+{
+  int_ptr addition = malloc(sizeof(int));
+  *addition = (*(int *)num1) + (*(int *)num2);
+  return (Element)addition;
+}
+
 Status is_even(Element number)
 {
   int num = *(int *)number;

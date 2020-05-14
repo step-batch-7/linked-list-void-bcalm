@@ -301,6 +301,17 @@ List_ptr filter(List_ptr list, Predicate predicate_func)
   return filtered_list;
 }
 
+Element reduce(List_ptr list, Element accumulator, Reducer reduce_func)
+{
+  Node_ptr current = list->first;
+  while (current != NULL)
+  {
+    accumulator = (*reduce_func)(accumulator, current->element);
+    current = current->next;
+  }
+  return accumulator;
+};
+
 void display_void(List_ptr list, Display display_func)
 {
   if (list->first == NULL)
