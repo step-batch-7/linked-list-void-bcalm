@@ -177,8 +177,24 @@ void run_add_unique()
   assert_equal(status, 1, "should successfully insert the element");
   assert_equal(list->length, 2, "should update the count");
   status = add_unique(list, &alphabet1, match_char);
-  assert_equal(status, 0, "should fail insert the element");
+  assert_equal(status, 0, "should fail to insert the element when element is already present");
 }
+
+void run_clear_list()
+{
+  List_ptr list = create_list();
+  describe("clear_list:");
+  Status status = clear_list(list);
+  assert_equal(status, 0, "should fail to clear list when list is already empty");
+  double num = 2.00;
+  add_to_start(list, &num);
+  status = clear_list(list);
+  assert_equal(status, 1, "should successfully clear the list when list is empty");
+  assert_equal(list->length, 0, "should update the count");
+  assert_is_null(list->first, "should point out the first to the null");
+  assert_is_null(list->last, "should point out the last to the null");
+}
+
 int main(void)
 {
   run_create_list();
@@ -192,6 +208,7 @@ int main(void)
   run_remove_first_occurrence();
   run_remove_all_occurrences();
   run_add_unique();
+  run_clear_list();
   int test_count = increase_test_count();
   printf("\nTotal: %d Passing\n", test_count);
   return 0;
