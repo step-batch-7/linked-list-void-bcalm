@@ -242,6 +242,20 @@ List_ptr remove_all_occurrences(List_ptr list, Element element, Matcher matcher)
   return removed_element_list;
 }
 
+Status add_unique(List_ptr list, Element element, Matcher matcher)
+{
+  Node_ptr current = list->first;
+  while (current != NULL)
+  {
+    if ((*matcher)(current->element, element))
+    {
+      return Failure;
+    }
+    current = current->next;
+  }
+  return add_to_list(list, element);
+}
+
 void display_void(List_ptr list, Display display_func)
 {
   if (list->first == NULL)
