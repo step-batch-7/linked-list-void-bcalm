@@ -1,8 +1,16 @@
-#! /bin/bash
-executable=$1
 rm -rf *.o
-gcc -c linkedlist.c test/*.c 
-gcc -o $1 *.o
-./$1
-rm -rf $1
-rm -rf *.o
+echo '\n'Compiling...
+gcc -c ./test/*.c linkedlist.c
+if [ $? == 0 ]
+then
+  echo '\n'...done
+  echo '\n'linking...
+  gcc -o a.out  *.o
+  echo ...done
+  echo '\n'executing...'\n'
+  ./a.out
+  rm -rf *.o
+  rm -rf a.out
+fi
+echo '\n'...done
+
