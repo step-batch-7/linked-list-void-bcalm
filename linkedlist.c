@@ -48,6 +48,35 @@ Status add_to_start(List_ptr list, Element value)
   return Success;
 }
 
+Status insert_at(List_ptr list, Element value, int position)
+{
+  Node_ptr new_node = malloc(sizeof(Node));
+  if (new_node == NULL || list->length < position || position < 0)
+  {
+    return Failure;
+  }
+  new_node->element = value;
+  new_node->next = NULL;
+
+  if (position == 0)
+  {
+    return add_to_start(list, value);
+  }
+  if (position == list->length)
+  {
+    return add_to_list(list, value);
+  }
+  Node_ptr current = list->first;
+  for (int length = 0; length < position - 1; length++)
+  {
+    current = current->next;
+  }
+  new_node->next = current->next;
+  current->next = new_node;
+  list->length++;
+  return Success;
+}
+
 void display_void(List_ptr list, Display display_func)
 {
   if (list->first == NULL)
