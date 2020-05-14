@@ -165,6 +165,38 @@ Element remove_at(List_ptr list, int position)
   return element;
 }
 
+Element remove_first_occurrence(List_ptr list, Element element, Matcher matcher)
+{
+  Node_ptr p_Walk = list->first, previous_node, node_to_free;
+  while (p_Walk != NULL)
+  {
+    if ((*matcher)(p_Walk->element, element))
+    {
+      if (p_Walk == list->first)
+      {
+        return remove_from_start(list);
+      }
+      node_to_free = previous_node->next;
+      if (p_Walk == list->last)
+      {
+        previous_node->next = NULL;
+        list->last = previous_node;
+      }
+      else
+      {
+        previous_node->next = p_Walk->next;
+      }
+      list->length--;
+      Element element = node_to_free->element;
+      free(node_to_free);
+      return element;
+    }
+    previous_node = p_Walk;
+    p_Walk = p_Walk->next;
+  }
+  return NULL;
+}
+
 void display_void(List_ptr list, Display display_func)
 {
   if (list->first == NULL)
