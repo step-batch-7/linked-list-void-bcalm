@@ -136,6 +136,35 @@ Element remove_from_end(List_ptr list)
   return element;
 }
 
+Element remove_at(List_ptr list, int position)
+{
+  if (list->first == NULL || list->length - 1 < position || position < 0)
+  {
+    return NULL;
+  }
+  if (position == 0)
+  {
+    return remove_from_start(list);
+  }
+  if (position == list->length - 1)
+  {
+    return remove_from_end(list);
+  }
+  Node_ptr current = list->first;
+  for (int count = 0; count < position - 1; count++)
+  {
+    current = current->next;
+  }
+
+  Node_ptr removed_node = current->next;
+  Element element = removed_node->element;
+  Node_ptr next_node = removed_node->next;
+  current->next = next_node;
+  free(removed_node);
+  list->length--;
+  return element;
+}
+
 void display_void(List_ptr list, Display display_func)
 {
   if (list->first == NULL)
