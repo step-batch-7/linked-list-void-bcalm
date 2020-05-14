@@ -43,6 +43,13 @@ void assert_is_int_equal(Element actual, int expected, Char_ptr message)
   printf("%s\n", message);
   increase_test_count();
 }
+void assert_is_char_equal(Element actual, char expected, Char_ptr message)
+{
+  Status status = *(char *)actual == expected;
+  print_status(status);
+  printf("%s\n", message);
+  increase_test_count();
+}
 
 void assert_is_list_equal(List_ptr actual, List_ptr expected, Matcher matcher, Char_ptr message)
 {

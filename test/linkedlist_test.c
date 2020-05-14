@@ -5,6 +5,11 @@ Status match_int(Element element1, Element element2)
   return *(int *)element1 == *(int *)element2;
 }
 
+Status match_char(Element element1, Element element2)
+{
+  return *(char *)element1 == *(char *)element2;
+}
+
 void run_create_list()
 {
   List_ptr list = create_list();
@@ -161,7 +166,19 @@ void run_remove_all_occurrences()
   assert_is_list_equal(removed_list, expected_list, &match_int, "should return the removed elements list");
   assert_equal(list->length, 1, "should update the count");
 }
-
+void run_add_unique()
+{
+  List_ptr list = create_list();
+  char alphabet = 'a';
+  char alphabet1 = 'b';
+  add_to_start(list, &alphabet);
+  describe("add_unique");
+  Status status = add_unique(list, &alphabet1, &match_char);
+  assert_equal(status, 1, "should successfully insert the element");
+  assert_equal(list->length, 2, "should update the count");
+  status = add_unique(list, &alphabet1, match_char);
+  assert_equal(status, 0, "should fail insert the element");
+}
 int main(void)
 {
   run_create_list();
@@ -174,6 +191,7 @@ int main(void)
   run_reverse();
   run_remove_first_occurrence();
   run_remove_all_occurrences();
+  run_add_unique();
   int test_count = increase_test_count();
   printf("\nTotal: %d Passing\n", test_count);
   return 0;

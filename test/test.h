@@ -11,4 +11,5 @@ void assert_is_null(Element, Char_ptr);
 void assert_equal(int, int, Char_ptr);
 void assert_is_int_equal(Element, int, Char_ptr);
 void assert_is_list_equal(List_ptr, List_ptr, Matcher, Char_ptr);
+void assert_is_char_equal(Element, char, Char_ptr);
 #endif
