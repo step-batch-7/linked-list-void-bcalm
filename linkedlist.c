@@ -29,14 +29,14 @@ Status add_to_list(List_ptr list, Element value)
   return Success;
 }
 
-Status add_to_start(List_ptr list, Element value)
+Status add_to_start(List_ptr list, Element element)
 {
   Node_ptr new_node = malloc(sizeof(Node));
   if (new_node == NULL)
   {
     return Failure;
   }
-  new_node->element = value;
+  new_node->element = element;
   new_node->next = list->first;
 
   if (list->length == 0)
@@ -48,23 +48,23 @@ Status add_to_start(List_ptr list, Element value)
   return Success;
 }
 
-Status insert_at(List_ptr list, Element value, int position)
+Status insert_at(List_ptr list, Element element, int position)
 {
   Node_ptr new_node = malloc(sizeof(Node));
   if (new_node == NULL || list->length < position || position < 0)
   {
     return Failure;
   }
-  new_node->element = value;
+  new_node->element = element;
   new_node->next = NULL;
 
   if (position == 0)
   {
-    return add_to_start(list, value);
+    return add_to_start(list, element);
   }
   if (position == list->length)
   {
-    return add_to_list(list, value);
+    return add_to_list(list, element);
   }
   Node_ptr current = list->first;
   for (int length = 0; length < position - 1; length++)
@@ -254,6 +254,22 @@ Status add_unique(List_ptr list, Element element, Matcher matcher)
     current = current->next;
   }
   return add_to_list(list, element);
+}
+
+Status clear_list(List_ptr list)
+{
+  Node_ptr current = list->first, next_node;
+  if (current == NULL)
+  {
+    return Failure;
+  }
+  while (current != NULL)
+  {
+    next_node = current->next;
+    remove_from_start(list);
+    current = next_node;
+  }
+  return Success;
 }
 
 void display_void(List_ptr list, Display display_func)
