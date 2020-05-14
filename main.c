@@ -15,6 +15,13 @@ void display_int(Element element)
   printf("Element is %d\n", *(int *)element);
 }
 
+Element square(Element value)
+{
+  int *result = malloc(sizeof(int));
+  *result = (*(int *)value) * (*(int *)value);
+  return (Element)result;
+}
+
 int main()
 {
   return 0;

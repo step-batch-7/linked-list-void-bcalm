@@ -272,6 +272,20 @@ Status clear_list(List_ptr list)
   return Success;
 }
 
+List_ptr map(List_ptr list, Mapper map_func)
+{
+  List_ptr mapped_list = create_list();
+  Node_ptr current = list->first;
+
+  while (current != NULL)
+  {
+    Element element = map_func(current->element);
+    add_to_list(mapped_list, element);
+    current = current->next;
+  }
+  return mapped_list;
+}
+
 void display_void(List_ptr list, Display display_func)
 {
   if (list->first == NULL)
