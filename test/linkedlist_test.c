@@ -145,6 +145,23 @@ void run_remove_first_occurrence()
   assert_equal(list->length, 2, "should not remove more than one element");
 }
 
+void run_remove_all_occurrences()
+{
+  List_ptr list = create_list();
+  int num = 1;
+  int num2 = 2;
+  describe("remove_all_occurrences:");
+  add_to_start(list, &num);
+  add_to_start(list, &num2);
+  add_to_start(list, &num);
+  List_ptr removed_list = remove_all_occurrences(list, &num, &match_int);
+  List_ptr expected_list = create_list();
+  add_to_start(expected_list, &num);
+  add_to_start(expected_list, &num);
+  assert_is_list_equal(removed_list, expected_list, &match_int, "should return the removed elements list");
+  assert_equal(list->length, 1, "should update the count");
+}
+
 int main(void)
 {
   run_create_list();
@@ -156,6 +173,7 @@ int main(void)
   run_remove_at();
   run_reverse();
   run_remove_first_occurrence();
+  run_remove_all_occurrences();
   int test_count = increase_test_count();
   printf("\nTotal: %d Passing\n", test_count);
   return 0;
