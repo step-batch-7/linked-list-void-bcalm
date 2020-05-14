@@ -1,6 +1,8 @@
 #ifndef __LINKEDLIST_TEST_H
 #define __LINKEDLIST_TEST_H
 #include "../linkedlist.h"
+#include <stdlib.h>
+
 typedef char *Char_ptr;
 typedef int *Int_ptr;
 

@@ -10,6 +10,46 @@ Status match_char(Element element1, Element element2)
   return *(char *)element1 == *(char *)element2;
 }
 
+Element square(Element value)
+{
+  int_ptr result = malloc(sizeof(int));
+  *result = (*(int *)value) * (*(int *)value);
+  return (Element)result;
+}
+
+Element to_upper_case(Element character)
+{
+  Int_ptr alphabet = malloc(sizeof(char));
+  char alphabet_ascii = *(char *)character;
+  *alphabet = alphabet_ascii >= 97 && alphabet_ascii <= 122 ? alphabet_ascii - 32 : alphabet_ascii;
+  return (Element)alphabet;
+}
+
+Element sum(Element num1, Element num2)
+{
+  int_ptr addition = malloc(sizeof(int));
+  *addition = (*(int *)num1) + (*(int *)num2);
+  return (Element)addition;
+}
+
+void increment(Element element)
+{
+  *(int *)element += 1;
+}
+
+Status is_even(Element number)
+{
+  int num = *(int *)number;
+  return num % 2 == 0;
+}
+
+Status is_vowel(Element character)
+{
+  Element capital_letter = to_upper_case(character);
+  char alphabet = *(char *)capital_letter;
+  return alphabet == 'A' || alphabet == 'E' || alphabet == 'I' || alphabet == 'O' || alphabet == 'U';
+}
+
 void run_create_list()
 {
   List_ptr list = create_list();
@@ -195,6 +235,60 @@ void run_clear_list()
   assert_is_null(list->last, "should point out the last to the null");
 }
 
+List_ptr get_int_list()
+{
+  List_ptr list = create_list();
+  int num1 = 1;
+  int num2 = 2;
+  int num3 = 3;
+  add_to_start(list, &num1);
+  add_to_start(list, &num2);
+  add_to_start(list, &num3);
+  return list;
+}
+
+List_ptr get_char_list()
+{
+  List_ptr list = create_list();
+  char alphabet1 = 'a';
+  char alphabet2 = 'b';
+  char alphabet3 = 'c';
+  add_to_start(list, &alphabet1);
+  add_to_start(list, &alphabet2);
+  add_to_start(list, &alphabet3);
+  return list;
+}
+
+void run_map()
+{
+  describe("Map void:");
+  List_ptr expected_list = create_list();
+  int number1 = 1;
+  int number2 = 4;
+  int number3 = 9;
+  add_to_start(expected_list, &number1);
+  add_to_start(expected_list, &number2);
+  add_to_start(expected_list, &number3);
+  List_ptr int_list = get_int_list();
+  List_ptr mapped_list = map(int_list, &square);
+  assert_is_list_equal(mapped_list, expected_list, &match_int, "should square all the number of the list");
+
+  List_ptr char_list = get_char_list();
+  List_ptr mapped_char_list = map(char_list, &to_upper_case);
+  List_ptr expected_char_list = create_list();
+  char alphabet1 = 'A';
+  char alphabet2 = 'B';
+  char alphabet3 = 'C';
+  add_to_start(expected_char_list, &alphabet1);
+  add_to_start(expected_char_list, &alphabet2);
+  add_to_start(expected_char_list, &alphabet3);
+  assert_is_list_equal(mapped_char_list, expected_char_list, &match_char, "should map all alphabets to upper case");
+
+  List_ptr empty_list = create_list();
+  List_ptr mapped_empty_list = map(empty_list, &to_upper_case);
+  assert_is_list_equal(mapped_empty_list, empty_list, &match_char, "should map the empty list");
+}
+
 int main(void)
 {
   run_create_list();
@@ -209,6 +303,7 @@ int main(void)
   run_remove_all_occurrences();
   run_add_unique();
   run_clear_list();
+  run_map();
   int test_count = increase_test_count();
   printf("\nTotal: %d Passing\n", test_count);
   return 0;
