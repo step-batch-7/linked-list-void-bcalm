@@ -12,6 +12,5 @@ void display_char(Element element)
 
 int main()
 {
-
   return 0;
 }
