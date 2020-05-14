@@ -126,6 +126,25 @@ void run_reverse()
   assert_is_list_equal(actual_list, empty_list, &match_int, "should reverse the list the empty list");
 }
 
+void run_remove_first_occurrence()
+{
+  List_ptr list = create_list();
+  int num = 1;
+  int num2 = 2;
+  add_to_start(list, &num);
+  describe("remove_first_occurrence:");
+  Element element = remove_first_occurrence(list, &num2, &match_int);
+  assert_is_null(element, "should not remove any element if element is not present in the list");
+  element = remove_first_occurrence(list, &num, &match_int);
+  assert_is_int_equal(element, 1, "should remove the first occurrence of given number");
+  assert_is_null(list->first, "should remove the last point also when list has only one element");
+  add_to_start(list, &num);
+  add_to_start(list, &num2);
+  add_to_start(list, &num);
+  element = remove_first_occurrence(list, &num, &match_int);
+  assert_equal(list->length, 2, "should not remove more than one element");
+}
+
 int main(void)
 {
   run_create_list();
@@ -136,6 +155,7 @@ int main(void)
   run_remove_from_end();
   run_remove_at();
   run_reverse();
+  run_remove_first_occurrence();
   int test_count = increase_test_count();
   printf("\nTotal: %d Passing\n", test_count);
   return 0;
