@@ -84,11 +84,11 @@ List_ptr reverse(List_ptr list)
   {
     return reverse_list;
   }
-  Node_ptr p_walk = list->first;
-  while (p_walk != NULL)
+  Node_ptr current = list->first;
+  while (current != NULL)
   {
-    add_to_start(reverse_list, p_walk->element);
-    p_walk = p_walk->next;
+    add_to_start(reverse_list, current->element);
+    current = current->next;
   }
   return reverse_list;
 };
@@ -329,11 +329,11 @@ void display_void(List_ptr list, Display display_func)
     printf("List is empty \n");
     return;
   }
-  Node_ptr p_walk = list->first;
-  while (p_walk != NULL)
+  Node_ptr current = list->first;
+  while (current != NULL)
   {
-    display_func(p_walk->element);
-    p_walk = p_walk->next;
+    display_func(current->element);
+    current = current->next;
   }
   printf("Total elements in list is/are %d\n", list->length);
 }
