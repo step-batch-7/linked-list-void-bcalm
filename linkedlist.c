@@ -77,6 +77,22 @@ Status insert_at(List_ptr list, Element value, int position)
   return Success;
 }
 
+List_ptr reverse(List_ptr list)
+{
+  List_ptr reverse_list = create_list();
+  if (list->first == NULL)
+  {
+    return reverse_list;
+  }
+  Node_ptr p_walk = list->first;
+  while (p_walk != NULL)
+  {
+    add_to_start(reverse_list, p_walk->element);
+    p_walk = p_walk->next;
+  }
+  return reverse_list;
+};
+
 void display_void(List_ptr list, Display display_func)
 {
   if (list->first == NULL)
