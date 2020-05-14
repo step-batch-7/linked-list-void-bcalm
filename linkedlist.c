@@ -9,14 +9,14 @@ List_ptr create_list()
   return list;
 }
 
-Status add_to_list(List_ptr list, Element element)
+Status add_to_list(List_ptr list, Element value)
 {
   Node_ptr new_node = malloc(sizeof(Node));
   if (new_node == NULL)
   {
     return Failure;
   }
-  new_node->element = element;
+  new_node->element = value;
   new_node->next = NULL;
   Node_ptr *ptr_to_set = &list->first;
   if (list->last != NULL)
@@ -26,6 +26,25 @@ Status add_to_list(List_ptr list, Element element)
   (*ptr_to_set) = new_node;
   list->last = new_node;
   list->length += 1;
+  return Success;
+}
+
+Status add_to_start(List_ptr list, Element value)
+{
+  Node_ptr new_node = malloc(sizeof(Node));
+  if (new_node == NULL)
+  {
+    return Failure;
+  }
+  new_node->element = value;
+  new_node->next = list->first;
+
+  if (list->length == 0)
+  {
+    list->last = new_node;
+  }
+  list->first = new_node;
+  list->length++;
   return Success;
 }
 
