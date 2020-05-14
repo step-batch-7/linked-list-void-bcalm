@@ -312,6 +312,16 @@ Element reduce(List_ptr list, Element accumulator, Reducer reduce_func)
   return accumulator;
 };
 
+void forEach(List_ptr list, ElementProcessor element_processor_func)
+{
+  Node_ptr current = list->first;
+  while (current != NULL)
+  {
+    element_processor_func(current->element);
+    current = current->next;
+  }
+};
+
 void display_void(List_ptr list, Display display_func)
 {
   if (list->first == NULL)

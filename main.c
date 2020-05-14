@@ -29,6 +29,11 @@ Element sum(Element num1, Element num2)
   return (Element)addition;
 }
 
+void increment(Element element)
+{
+  *(int *)element += 1;
+}
+
 Status is_even(Element number)
 {
   int num = *(int *)number;
