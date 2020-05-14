@@ -286,6 +286,21 @@ List_ptr map(List_ptr list, Mapper map_func)
   return mapped_list;
 }
 
+List_ptr filter(List_ptr list, Predicate predicate_func)
+{
+  List_ptr filtered_list = create_list();
+  Node_ptr current = list->first;
+  while (current != NULL)
+  {
+    if ((*predicate_func)(current->element))
+    {
+      add_to_list(filtered_list, current->element);
+    }
+    current = current->next;
+  }
+  return filtered_list;
+}
+
 void display_void(List_ptr list, Display display_func)
 {
   if (list->first == NULL)

@@ -22,6 +22,11 @@ Element square(Element value)
   return (Element)result;
 }
 
+Status is_even(Element number)
+{
+  int num = *(int *)number;
+  return num % 2 == 0;
+}
 int main()
 {
   return 0;
