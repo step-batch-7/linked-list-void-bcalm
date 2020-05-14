@@ -93,6 +93,20 @@ List_ptr reverse(List_ptr list)
   return reverse_list;
 };
 
+Element remove_from_start(List_ptr list)
+{
+  if (list->first == NULL)
+  {
+    return NULL;
+  }
+  Node_ptr first_node = list->first;
+  Element element = first_node->element;
+  list->first = first_node->next;
+  free(first_node);
+  list->length -= 1;
+  return element;
+}
+
 void display_void(List_ptr list, Display display_func)
 {
   if (list->first == NULL)
