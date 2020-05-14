@@ -100,11 +100,15 @@ Element remove_from_start(List_ptr list)
     return NULL;
   }
   Node_ptr first_node = list->first;
-  Element element = first_node->element;
+  if (list->length == 1)
+  {
+    list->last = NULL;
+  }
+  Element removed_element = first_node->element;
   list->first = first_node->next;
   free(first_node);
   list->length -= 1;
-  return element;
+  return removed_element;
 }
 
 Element remove_from_end(List_ptr list)
@@ -114,14 +118,14 @@ Element remove_from_end(List_ptr list)
     return NULL;
   }
   list->length--;
-  Element element;
+  Element removed_element;
   if (list->first->next == NULL)
   {
-    element = list->first->element;
+    removed_element = list->first->element;
     free(list->first);
     list->first = NULL;
     list->last = NULL;
-    return element;
+    return removed_element;
   }
 
   Node_ptr current = list->first;
@@ -129,11 +133,11 @@ Element remove_from_end(List_ptr list)
   {
     current = current->next;
   }
-  element = current->next->element;
+  removed_element = current->next->element;
   free(current->next);
   current->next = NULL;
   list->last = current;
-  return element;
+  return removed_element;
 }
 
 Element remove_at(List_ptr list, int position)
@@ -157,44 +161,85 @@ Element remove_at(List_ptr list, int position)
   }
 
   Node_ptr removed_node = current->next;
-  Element element = removed_node->element;
+  Element removed_element = removed_node->element;
   Node_ptr next_node = removed_node->next;
   current->next = next_node;
   free(removed_node);
   list->length--;
-  return element;
+  return removed_element;
 }
 
 Element remove_first_occurrence(List_ptr list, Element element, Matcher matcher)
 {
-  Node_ptr p_Walk = list->first, previous_node, node_to_free;
-  while (p_Walk != NULL)
+  Node_ptr current = list->first, previous_node, node_to_free;
+  while (current != NULL)
   {
-    if ((*matcher)(p_Walk->element, element))
+    if ((*matcher)(current->element, element))
     {
-      if (p_Walk == list->first)
+      if (current == list->first)
       {
         return remove_from_start(list);
       }
       node_to_free = previous_node->next;
-      if (p_Walk == list->last)
+      if (current == list->last)
       {
         previous_node->next = NULL;
         list->last = previous_node;
       }
       else
       {
-        previous_node->next = p_Walk->next;
+        previous_node->next = current->next;
       }
       list->length--;
-      Element element = node_to_free->element;
+      Element removed_element = node_to_free->element;
       free(node_to_free);
-      return element;
+      return removed_element;
     }
-    previous_node = p_Walk;
-    p_Walk = p_Walk->next;
+    previous_node = current;
+    current = current->next;
   }
   return NULL;
+}
+
+List_ptr remove_all_occurrences(List_ptr list, Element element, Matcher matcher)
+{
+  Node_ptr current = list->first;
+  Node_ptr previous_node, next_node;
+  Element removed_element;
+  List_ptr removed_element_list = create_list();
+
+  while (current != NULL)
+  {
+    next_node = current->next;
+    if ((*matcher)(current->element, element))
+    {
+      if (current == list->first)
+      {
+        removed_element = remove_from_start(list);
+        next_node = list->first;
+      }
+      else
+      {
+        removed_element = current->element;
+        if (current == list->last)
+        {
+          previous_node->next = NULL;
+          list->last = previous_node;
+        }
+        else
+        {
+          previous_node->next = current->next;
+        }
+        list->length--;
+        free(current);
+        current = previous_node;
+      }
+      add_to_list(removed_element_list, removed_element);
+    }
+    previous_node = current;
+    current = next_node;
+  }
+  return removed_element_list;
 }
 
 void display_void(List_ptr list, Display display_func)
@@ -210,5 +255,5 @@ void display_void(List_ptr list, Display display_func)
     display_func(p_walk->element);
     p_walk = p_walk->next;
   }
-  printf("Total elements in list is/are %d", list->length);
+  printf("Total elements in list is/are %d\n", list->length);
 }
