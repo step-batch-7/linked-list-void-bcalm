@@ -19,7 +19,7 @@ Element square(Element value)
 
 Element to_upper_case(Element character)
 {
-  Int_ptr alphabet = malloc(sizeof(char));
+  Char_ptr alphabet = malloc(sizeof(char));
   char alphabet_ascii = *(char *)character;
   *alphabet = alphabet_ascii >= 97 && alphabet_ascii <= 122 ? alphabet_ascii - 32 : alphabet_ascii;
   return (Element)alphabet;
@@ -45,9 +45,8 @@ Status is_even(Element number)
 
 Status is_vowel(Element character)
 {
-  Element capital_letter = to_upper_case(character);
-  char alphabet = *(char *)capital_letter;
-  return alphabet == 'A' || alphabet == 'E' || alphabet == 'I' || alphabet == 'O' || alphabet == 'U';
+  char alphabet = *(char *)character;
+  return alphabet == 'a' || alphabet == 'e' || alphabet == 'i' || alphabet == 'o' || alphabet == 'u';
 }
 
 void run_create_list()
@@ -235,30 +234,6 @@ void run_clear_list()
   assert_is_null(list->last, "should point out the last to the null");
 }
 
-List_ptr get_int_list()
-{
-  List_ptr list = create_list();
-  int num1 = 1;
-  int num2 = 2;
-  int num3 = 3;
-  add_to_start(list, &num1);
-  add_to_start(list, &num2);
-  add_to_start(list, &num3);
-  return list;
-}
-
-List_ptr get_char_list()
-{
-  List_ptr list = create_list();
-  char alphabet1 = 'a';
-  char alphabet2 = 'b';
-  char alphabet3 = 'c';
-  add_to_start(list, &alphabet1);
-  add_to_start(list, &alphabet2);
-  add_to_start(list, &alphabet3);
-  return list;
-}
-
 void run_map()
 {
   describe("Map void:");
@@ -269,24 +244,69 @@ void run_map()
   add_to_start(expected_list, &number1);
   add_to_start(expected_list, &number2);
   add_to_start(expected_list, &number3);
-  List_ptr int_list = get_int_list();
+  List_ptr int_list = create_list();
+  int num1 = 1;
+  int num2 = 2;
+  int num3 = 3;
+  add_to_start(int_list, &num1);
+  add_to_start(int_list, &num2);
+  add_to_start(int_list, &num3);
   List_ptr mapped_list = map(int_list, &square);
   assert_is_list_equal(mapped_list, expected_list, &match_int, "should square all the number of the list");
 
-  List_ptr char_list = get_char_list();
+  List_ptr char_list = create_list();
+  char alphabet1 = 'a';
+  char alphabet2 = 'b';
+  char alphabet3 = 'c';
+  add_to_start(char_list, &alphabet1);
+  add_to_start(char_list, &alphabet2);
+  add_to_start(char_list, &alphabet3);
+
   List_ptr mapped_char_list = map(char_list, &to_upper_case);
   List_ptr expected_char_list = create_list();
-  char alphabet1 = 'A';
-  char alphabet2 = 'B';
-  char alphabet3 = 'C';
-  add_to_start(expected_char_list, &alphabet1);
-  add_to_start(expected_char_list, &alphabet2);
-  add_to_start(expected_char_list, &alphabet3);
+  char cap_alphabet1 = 'A';
+  char cap_alphabet2 = 'B';
+  char cap_alphabet3 = 'C';
+  add_to_start(expected_char_list, &cap_alphabet1);
+  add_to_start(expected_char_list, &cap_alphabet2);
+  add_to_start(expected_char_list, &cap_alphabet3);
   assert_is_list_equal(mapped_char_list, expected_char_list, &match_char, "should map all alphabets to upper case");
 
   List_ptr empty_list = create_list();
   List_ptr mapped_empty_list = map(empty_list, &to_upper_case);
   assert_is_list_equal(mapped_empty_list, empty_list, &match_char, "should map the empty list");
+}
+
+void run_filter()
+{
+  describe("Filter void:");
+  List_ptr int_list = create_list();
+  int num1 = 1;
+  int num2 = 2;
+  int num3 = 3;
+  add_to_start(int_list, &num1);
+  add_to_start(int_list, &num2);
+  add_to_start(int_list, &num3);
+  List_ptr expected_list = create_list();
+  add_to_start(expected_list, &num2);
+  List_ptr filtered_list = filter(int_list, &is_even);
+  assert_is_list_equal(filtered_list, expected_list, &match_int, "should filter the even numbers");
+
+  List_ptr char_list = create_list();
+  char alphabet1 = 'a';
+  char alphabet2 = 'b';
+  char alphabet3 = 'c';
+  add_to_start(char_list, &alphabet1);
+  add_to_start(char_list, &alphabet2);
+  add_to_start(char_list, &alphabet3);
+  List_ptr filtered_char_list = filter(char_list, &is_vowel);
+  List_ptr expected_char_list = create_list();
+  add_to_start(expected_char_list, &alphabet1);
+  assert_is_list_equal(filtered_char_list, expected_char_list, &match_char, "should filter the vowels");
+
+  List_ptr empty_list = create_list();
+  List_ptr filtered_empty_list = filter(empty_list, &is_vowel);
+  assert_is_list_equal(filtered_empty_list, empty_list, &match_char, "should filter the empty list");
 }
 
 int main(void)
@@ -304,6 +324,7 @@ int main(void)
   run_add_unique();
   run_clear_list();
   run_map();
+  run_filter();
   int test_count = increase_test_count();
   printf("\nTotal: %d Passing\n", test_count);
   return 0;
