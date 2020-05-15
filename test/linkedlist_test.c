@@ -329,6 +329,38 @@ void run_reduce()
   assert_is_int_equal(element, 0, "should return the accumulator when list is empty");
 }
 
+void run_forEach()
+{
+  describe("forEach:");
+  List_ptr expected_list = create_list();
+  int number1 = 2;
+  int number2 = 3;
+  int number3 = 4;
+  add_to_start(expected_list, &number1);
+  add_to_start(expected_list, &number2);
+  add_to_start(expected_list, &number3);
+  List_ptr int_list = create_list();
+
+  int num1 = 1;
+  add_to_start(int_list, &num1);
+  add_to_start(int_list, &number1);
+  add_to_start(int_list, &number2);
+  forEach(int_list, &increment);
+  assert_is_list_equal(int_list, expected_list, &match_int, "should increment all the values by one in the list");
+
+  List_ptr char_list = create_list();
+  char alphabet1 = 'a';
+  char alphabet2 = 'b';
+  char alphabet3 = 'c';
+  add_to_start(char_list, &alphabet1);
+  add_to_start(char_list, &alphabet2);
+  add_to_start(char_list, &alphabet3);
+
+  List_ptr empty_list = create_list();
+  forEach(empty_list, &increment);
+  assert_is_list_equal(empty_list, empty_list, &match_char, "should map the empty list");
+}
+
 int main(void)
 {
   run_create_list();
@@ -346,6 +378,7 @@ int main(void)
   run_map();
   run_filter();
   run_reduce();
+  run_forEach();
   int test_count = increase_test_count();
   printf("\nTotal: %d Passing\n", test_count);
   return 0;
