@@ -236,7 +236,7 @@ void run_clear_list()
 
 void run_map()
 {
-  describe("Map void:");
+  describe("map:");
   List_ptr expected_list = create_list();
   int number1 = 1;
   int number2 = 4;
@@ -279,7 +279,7 @@ void run_map()
 
 void run_filter()
 {
-  describe("Filter void:");
+  describe("filter:");
   List_ptr int_list = create_list();
   int num1 = 1;
   int num2 = 2;
@@ -309,6 +309,26 @@ void run_filter()
   assert_is_list_equal(filtered_empty_list, empty_list, &match_char, "should filter the empty list");
 }
 
+void run_reduce()
+{
+  describe("reduce:");
+  List_ptr int_list = create_list();
+  int num = 0;
+  int num1 = 1;
+  int num2 = 2;
+  int num3 = 3;
+  add_to_start(int_list, &num1);
+  add_to_start(int_list, &num2);
+  add_to_start(int_list, &num3);
+
+  Element sum_of_all_digits = reduce(int_list, &num, &sum);
+  assert_is_int_equal(sum_of_all_digits, 6, "should add all the number of the list");
+
+  List_ptr empty_list = create_list();
+  Element element = reduce(empty_list, &num, &sum);
+  assert_is_int_equal(element, 0, "should return the accumulator when list is empty");
+}
+
 int main(void)
 {
   run_create_list();
@@ -325,6 +345,7 @@ int main(void)
   run_clear_list();
   run_map();
   run_filter();
+  run_reduce();
   int test_count = increase_test_count();
   printf("\nTotal: %d Passing\n", test_count);
   return 0;
